@@ -92,30 +92,34 @@ void printList(struct List *list) {
 
 
 void addElementFromKeyboard(struct List* list) {
-    int i, j = 1;
     struct List *pnew, *p = list;
     pnew = (struct List*)malloc(sizeof(struct List));
+    char tFName[16], tLName[16], tGroup[8];
+    double tMark;
+    short int tCourse;
 
     printf("%s", "FirstName:");
-    scanf("%s", pnew->data.firstName);
-    printf("%s", pnew->data.firstName);
+    scanf("%s", tFName);
 
     printf("%s", "LastName:");
-    scanf("%s", pnew->data.lastName);
+    scanf("%s", tLName);
 
     printf("%s", "Group:");
-    scanf("%s", pnew->data.group);
+    scanf("%s", tGroup);
 
-    double tempMark = 0.0;
     printf("%s", "Mark:");
-    scanf("%lf", &tempMark);
-    short int tempCourse = 0;
+    scanf("%lf", &tMark);
+
     printf("%s", "Course:");
-    scanf("%d", &tempCourse);
+    scanf("%d", &tCourse);
+
     printf("%s", "\n");
 
-    pnew->data.course = tempCourse;
-    pnew->data.mark = tempMark;
+    strcpy(pnew->data.firstName, tFName);
+    strcpy(pnew->data.lastName, tLName);
+    strcpy(pnew->data.group, tGroup);
+    pnew->data.mark = tMark;
+    pnew->data.course = tCourse;
 
     while (p->next != NULL) {
         p = p->next;
