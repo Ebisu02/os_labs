@@ -51,7 +51,7 @@ void toList(struct List *list, char* firstName, char* lastName, short int course
     pnew->next = NULL;
 }
 
-struct List *deleteElement(struct List *list) {
+struct List *delete(struct List *list) {
     struct List *prev, *next;
     prev = list->prev;
     next = list->next;
@@ -65,33 +65,17 @@ struct List *deleteElement(struct List *list) {
     return(prev);
 }
 
-struct List* deleteElementByIndex(struct List *list, int cnt) {
-    struct List *p;
-    p = list;
-    int i = 0;
-    while (i < cnt) {
-        if (i == cnt - 1) {
-            return p;
-        }
-        p = p->next;
-        ++i;
-    }
-    return NULL;
-}
-
 void printList(struct List *list) {
     printf("List:\n");
     struct List *p;
     p = list;
-    int num = 1;
     do {
         printf("%s %s %d %s %.2lf\n", p->data.firstName, p->data.lastName, p->data.course, p->data.group, p->data.mark);
         p = p->next;
     } while (p != NULL);
 }
 
-
-void addElementFromKeyboard(struct List* list) {
+void addFromKeyboard(struct List* list) {
     struct List *pnew, *p = list;
     pnew = (struct List*)malloc(sizeof(struct List));
     char tFName[16], tLName[16], tGroup[8];
@@ -129,6 +113,14 @@ void addElementFromKeyboard(struct List* list) {
     pnew->next = NULL;
 }
 
+void serialize(char* fileName, struct List* list) {
+
+}
+
+struct List* deserialize(char* pathToFile) {
+    return NULL;
+}
+
 int main() {
     char firstName[16] = "firstName\0";
     char lastName[16] = "lastName\0";
@@ -136,6 +128,6 @@ int main() {
     double mark = 4.2;
     short int course = 3;
     struct List* journal = init(firstName, lastName, course, group, mark);
-    addElementFromKeyboard(journal);
+    addFromKeyboard(journal);
     printList(journal);
 }
