@@ -32,52 +32,23 @@ struct List* init(char* firstName, char* lastName, short int course, char* group
     return(list);
 }
 
-void add(struct List *list, char* firstName, char* lastName, short int course, char* group, double mark, int n) {
+void toList(struct List *list, char* firstName, char* lastName, short int course, char* group, double mark) {
     int i, j = 1;
     struct List *pnew, *p = list;
     pnew = (struct List*)malloc(sizeof(struct List));
 
-    pnew->data.firstName = firstName;
-    pnew->data.lastName = lastName;
+    pnew->data.firstName = firstName + '\0';
+    pnew->data.lastName = lastName + '\0';
     pnew->data.course = course;
-    pnew->data.group = group;
+    pnew->data.group = group + '\0';
     pnew->data.mark = mark;
 
-    if (n <= 1 || list == NULL) {
-        pnew->next = list;
-        list = pnew;
+    while (p->next != NULL) {
+        p = p->next;
     }
-    else {
-        if (p->next != NULL) {
-            p = p->next;
-            ++j;
-        }
-        if (n <= j + 1)
-        {
-            pnew->next = p->next;
-            p->next = pnew;
-        }
-    }
-}
-
-struct List *addElement(struct List *list, char* firstName, char* lastName, short int course, char* group, double mark) {
-    struct List *temp, *p;
-    temp = (struct List*)malloc(sizeof(struct List));
-    p = list->next;
-    list->next = temp;
-
-    temp->data.firstName = firstName;
-    temp->data.lastName = lastName;
-    temp->data.mark = mark;
-    temp->data.course = course;
-    temp->data.group = group;
-
-    temp->next = p;
-    temp->prev = list;
-    if (p != NULL) {
-        p->prev = temp;
-    }
-    return(temp);
+    p->next = pnew;
+    pnew->prev = p;
+    pnew->next = NULL;
 }
 
 struct List *deleteElement(struct List *list) {
@@ -108,30 +79,13 @@ struct List* deleteElementByIndex(struct List *list, int cnt) {
     return NULL;
 }
 
-struct List* listNav(struct List *list, int cnt) {
-    struct List *p;
-    p = list;
-    int i = 0;
-    while (i < cnt) {
-        if (i == cnt - 1) {
-            printf("%s %s %d %s %.2f", p->data.firstName, p->data.lastName, p->data.course, p->data.group, p->data.mark);
-            printf("\n");
-            return p;
-        }
-        p = p->next;
-        ++i;
-    }
-    return NULL;
-}
-
 void printList(struct List *list) {
     printf("List:\n");
     struct List *p;
     p = list;
     int num = 1;
     do {
-        listNav(list, num);
-        ++num;
+        printf("%s %s %d %s %.2lf\n", p->data.firstName, p->data.lastName, p->data.course, p->data.group, p->data.mark);
         p = p->next;
     } while (p != NULL);
 }
@@ -140,30 +94,50 @@ void printList(struct List *list) {
 void addElementFromKeyboard(struct List* list) {
     char tempFirstName[16];
     printf("%s", "FirstName:");
-    scanf("%s", &tempFirstName);
+    scanf("%s", tempFirstName);
     char tempLastName[16];
     printf("%s", "LastName:");
-    scanf("%s", &tempLastName);
-    char tempGroup[8];
+    scanf("%s", tempLastName);
+    char tempGroup[8] = "\0";
     printf("%s", "Group:");
-    scanf("%s", &tempGroup);
-    double tempMark;
+    scanf("%s", tempGroup);
+    double tempMark = 0.0;
     printf("%s", "Mark:");
-    scanf("%f", &tempMark);
-    short int tempCourse;
+    scanf("%lf", &tempMark);
+    short int tempCourse = 0;
     printf("%s", "Course:");
     scanf("%d", &tempCourse);
     printf("%s", "\n");
-    addElement(&list, tempFirstName, tempLastName, tempCourse, tempGroup, tempMark);
+    printf("%s\n",tempFirstName);
+
+    int i, j = 1;
+    struct List *pnew, *p = list;
+    pnew = (struct List*)malloc(sizeof(struct List));
+
+    strcpy(pnew->data.firstName, tempFirstName);
+    strcpy(pnew->data.lastName, tempLastName);
+    strcpy(pnew->data.group, tempGroup);
+    pnew->data.firstName = tempFirstName;
+    pnew->data.lastName = tempLastName;
+    pnew->data.course = tempCourse;
+    pnew->data.group = tempGroup;
+    pnew->data.mark = tempMark;
+
+    while (p->next != NULL) {
+        p = p->next;
+    }
+    p->next = pnew;
+    pnew->prev = p;
+    pnew->next = NULL;
 }
 
 int main() {
-    char firstName[16] = "Serega\0";
-    char lastName[16] = "Familia\0";
-    char group[8] = "ip-015\0";
+    char firstName[16] = "firstName\0";
+    char lastName[16] = "lastName\0";
+    char group[8] = "group\0";
     double mark = 4.2;
     short int course = 3;
     struct List* journal = init(firstName, lastName, course, group, mark);
-    addElementFromKeyboard(&journal);
+    addElementFromKeyboard(journal);
     printList(journal);
 }
