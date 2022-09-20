@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <windows.h>
 
 struct Student {
     char firstName[16];
@@ -51,17 +52,69 @@ void toList(struct List *list, char* firstName, char* lastName, short int course
     pnew->next = NULL;
 }
 
+
+// NOT WORKING
+void toListByIndex(struct List *list, char* firstName, char* lastName, short int course, char* group, double mark, int index) {
+    struct List *pnew, *p = list;
+    pnew = (struct List*)malloc(sizeof(struct List));
+
+    strcpy(pnew->data.firstName, firstName);
+    strcpy(pnew->data.lastName, lastName);
+    pnew->data.course = course;
+    strcpy(pnew->data.group, group);
+    pnew->data.mark = mark;
+    int counter = 0;
+    while (p->next != NULL && counter != index) {
+        p = p->next;
+        ++counter;
+    }
+    if (p->next != NULL) {
+        struct List *ptemp = p;
+        pnew->next = p->next;
+        pnew->prev = p->prev;
+        p->prev->next = pnew;
+        p->next->prev = pnew;
+        p->next = NULL;
+        p->prev = NULL;
+        while (pnew->next != NULL) {
+            pnew = pnew->next;
+        }
+        pnew->next = p;
+        p->prev = pnew;
+        p->next = NULL;
+    }
+    else {
+        p->next = pnew;
+        pnew->prev = p;
+        pnew->next = NULL;
+    }
+}
+
 struct List *delete(struct List *list) {
     struct List *prev, *next;
     prev = list->prev;
     next = list->next;
-    if (prev != NULL) {
-        prev->next = list->next;
+
+    if (next == NULL && prev == NULL) {
+        free(list);
+        return(prev);
     }
-    if (next != NULL) {
-        next->prev = list->prev;
+    if (next == NULL && prev != NULL) {
+        prev->next = NULL;
+        free(list);
+        return(prev);
     }
-    free(list);
+    if (next != NULL && prev == NULL) {
+        next->prev = NULL;
+        free(list);
+        return (prev);
+    }
+    if (next != NULL && prev != NULL) {
+        next->prev = prev;
+        prev->next = next;
+        free(list);
+        return(prev);
+    }
     return(prev);
 }
 
@@ -114,20 +167,38 @@ void addFromKeyboard(struct List* list) {
 }
 
 void serialize(char* fileName, struct List* list) {
-
+    FILE* t;
+    t = fopen(fileName, "bw");
+    fwrite(&list, sizeof(list), 1, t);
+    fclose(t);
 }
 
 struct List* deserialize(char* pathToFile) {
     return NULL;
 }
 
-int main() {
-    char firstName[16] = "firstName\0";
-    char lastName[16] = "lastName\0";
-    char group[8] = "group\0";
+void lab_1() {
+    char firstName[16] = "TestInit";
+    char lastName[16] = "TestInit";
+    char group[8] = "ip";
     double mark = 4.2;
     short int course = 3;
     struct List* journal = init(firstName, lastName, course, group, mark);
     addFromKeyboard(journal);
+    toList(journal, "TestToList", "TestToList", 1, "ip", 4.21);
+    //printf("\n%s", journal->data.firstName);
+    delete(journal->next);
     printList(journal);
+}
+
+const double KB = 1024;
+const double MB = KB * 1024;
+const double GB = MB * 1024;
+
+void lab_2() {
+
+}
+
+int main() {
+    lab_2();
 }
