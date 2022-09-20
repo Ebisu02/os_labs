@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <windows.h>
+#include <sys/sysinfo.h>
 
 struct Student {
     char firstName[16];
@@ -196,7 +196,14 @@ const double MB = KB * 1024;
 const double GB = MB * 1024;
 
 void lab_2() {
+    struct sysinfo systemInfo;
+    sysinfo(&systemInfo);
 
+    printf("RAM & SWAP:\n");
+    printf("Total RAM - %.1f GB ", systemInfo.totalram / GB);
+    printf("\nAvailable RAM - %.1f GB ", systemInfo.freeram / GB);
+    printf("\nTotal SWAP - %.1f GB ", systemInfo.totalswap / GB);
+    printf("\nAvailable SWAP - %.1f GB \n", systemInfo.freeswap / GB);
 }
 
 int main() {
