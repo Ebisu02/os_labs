@@ -1,22 +1,8 @@
-#define _CRT_SECURE_NO_WARNINGS
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include <sys/sysinfo.h>
+//
+// Created by hello on 04.10.2022.
+//
 
-struct Student {
-    char firstName[16];
-    char lastName[16];
-    short int course;
-    char group[8];
-    double mark;
-};
-
-struct List {
-    struct Student data;
-    struct List *next;
-    struct List *prev;
-};
+#include "lab_1.h"
 
 struct List* init(char* firstName, char* lastName, short int course, char* group, double mark) {
     struct List *list;
@@ -189,23 +175,4 @@ void lab_1() {
     //printf("\n%s", journal->data.firstName);
     delete(journal->next);
     printList(journal);
-}
-
-const double KB = 1024;
-const double MB = KB * 1024;
-const double GB = MB * 1024;
-
-void lab_2() {
-    struct sysinfo systemInfo;
-    sysinfo(&systemInfo);
-
-    printf("RAM & SWAP:\n");
-    printf("Total RAM - %.1f GB ", systemInfo.totalram / GB);
-    printf("\nAvailable RAM - %.1f GB ", systemInfo.freeram / GB);
-    printf("\nTotal SWAP - %.1f GB ", systemInfo.totalswap / GB);
-    printf("\nAvailable SWAP - %.1f GB \n", systemInfo.freeswap / GB);
-}
-
-int main() {
-    lab_2();
 }
