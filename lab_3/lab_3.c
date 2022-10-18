@@ -6,7 +6,6 @@
 
 // WARNING: WORKING ONLY ON LINUX OS UNCOMMENT TO USE!!!
 
-/*
 void ex2() {
     pid_t p1, p2, p3, p4, p5, p6, p7, p8;
     printf("Parent of all: %d\n", getpid());
@@ -125,4 +124,4 @@ void create_proc() {
         fprintf(stdout, "PARENT: %i s=%g &s=%u\n", (int) getpid(), s, &s);
     }
 }
-*/
+

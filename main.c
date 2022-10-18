@@ -8,5 +8,6 @@
 #include "lab_3/lab_3.h"
 
 int main() {
+    ex1();
     return 0;
 }
