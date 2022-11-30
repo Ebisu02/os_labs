@@ -1,0 +1,3 @@
+make
+./binary
+make clean
