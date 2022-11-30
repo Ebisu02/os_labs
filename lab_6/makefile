@@ -14,4 +14,4 @@ module2.o: module2.c
 	gcc -c -fPIC module2.c
 
 clean:
-	rm -f *.o *.so binary
+	rm -f *.o binary
